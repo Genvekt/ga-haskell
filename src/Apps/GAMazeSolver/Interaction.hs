@@ -4,13 +4,14 @@ import Graphics.Gloss.Interface.Pure.Game
 import Graphics.Gloss
 
 import DataStructures.Maze
-import DataStructures.GA
-import Visualisers.Draw
+import DataStructures.Agent
+import Visualiser.System
 
-import Maze
 
+import MazeHandler.Transformer
 import Apps.GAMazeSolver.Settings
-import Apps.GAMazeSolver.AgentGA
+
+import Agent.MazeSolver
 
 
 visualization ::[Gene] ->  IO()

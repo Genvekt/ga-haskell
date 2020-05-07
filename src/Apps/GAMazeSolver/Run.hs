@@ -2,7 +2,7 @@ module Apps.GAMazeSolver.Run where
 
 import Apps.GAMazeSolver.Interaction
 import Apps.GAMazeSolver.Settings
-import Apps.GAMazeSolver.AgentGA
+import Apps.GAMazeSolver.GA
 import GA
 --------------------------------- The Entry Points -----------------------------
 solution1:: IO()

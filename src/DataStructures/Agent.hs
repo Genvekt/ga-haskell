@@ -1,4 +1,4 @@
-module DataStructures.GA where
+module DataStructures.Agent where
 import DataStructures.Maze
 -- | Gene to modify (vision and memory)
 type Gene = (Int,Int)
