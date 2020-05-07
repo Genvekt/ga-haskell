@@ -31,7 +31,7 @@ nextMove
  -> Maze   -- ^ Maze to solve
  -> Coords -- ^ The next position that hero choose
 nextMove (Hero (vision, memory) history (x,y) health) maze
- | stopOn Exit (whatTile maze (x,y)) = (x,y)                                    -- ^ If current position is exit, stay on this position
+ | stopOn Exit (whatCell maze (x,y)) = (x,y)                                    -- ^ If current position is exit, stay on this position
  | contains maze Exit = go_to (listToMaybe coords_to_exit)                        -- ^ If exit is in vision area, try go first leading to it direction
  | otherwise =
      decideMove (Hero (vision, memory) history (x,y) health) modified_maze       -- ^ Choose good enough move

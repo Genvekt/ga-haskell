@@ -34,8 +34,8 @@ dfs
   -> (Maybe Tile -> Bool) -- ^ Stop condition
   -> Bool
 dfs maze (x,y) from isEnd
-  | isWall (whatTile maze (x,y)) = False                                        -- ^ If current position is wall - there is not way
-  | isEnd (whatTile maze (x,y)) = True                                          -- ^ If we found desired Tile - way found
+  | isWall (whatCell maze (x,y)) = False                                        -- ^ If current position is wall - there is not way
+  | isEnd (whatCell maze (x,y)) = True                                          -- ^ If we found desired Tile - way found
   | otherwise = canGoTo (x-1,y) || canGoTo (x+1,y) ||                         -- ^ Check all 4 directions
                 canGoTo (x,y-1) || canGoTo (x,y+1)
     where
