@@ -25,9 +25,9 @@ drawMemory memory = pictures (map showCell agedMoves)
 
 
 drawVision :: Coords -> Int -> Picture
-drawVision (x,y) radius = (translate j i (color (withAlpha 0.3 (blue)) (rectangleSolid 3 r))) <> 
-  (translate j i (color (withAlpha 0.3 (blue)) (rectangleSolid r 3)))
+drawVision (x,y) radius = (translate j i (color (withAlpha 0.3 (blue)) (rectangleSolid r 3))) <>
+  (translate j i (color (withAlpha 0.3 (blue)) (rectangleSolid 3 r)))
  where
   i = fromIntegral x
   j = fromIntegral y
-  r = fromIntegral radius
+  r = fromIntegral radius *2 +1
