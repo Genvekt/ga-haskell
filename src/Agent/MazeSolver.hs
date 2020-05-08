@@ -57,6 +57,53 @@ decideMove (Hero _ history (x,y) _) maze =
   extractMove (Just (_,move)) = move                                                -- ^ Good move == move that is far away in memory
   extractMove Nothing = (x,y)                                                       -- ^ If there is no choice, stay on current position
 
+  -- | Get list of coordinates that leads to desired Tile
+  runPathFinder
+   :: Maze                 -- ^ Where to search
+   -> (Maybe Tile -> Bool) -- ^ Stop condition
+   -> Coords               -- ^ Start position
+   -> [Coords]             -- ^ Coordinates that leads to desired Tile
+  runPathFinder maze stop_condition (x,y) =
+     filter (hasPath maze stop_condition (x,y)) coords                            -- ^ Filter only coords that lead to desired Tile
+   where
+    coords = [(x+1,y),(x-1,y),(x,y+1),(x,y-1)]                                     -- ^ Try all 4 directions from start position
+
+  -- | Check if move leads to desired Tile
+  hasPath
+   :: Maze                  -- ^ Where to search
+   -> (Maybe Tile -> Bool)  -- ^ Stop condition
+   -> Coords                -- ^ Start position
+   -> (Coords -> Bool)
+  hasPath maze stop_condition (x,y) (x_next,y_next) =
+   findPath maze (x_next,y_next) stop_condition (x_next + x_next - x ,y_next + y_next - y)
+  
+  findPath
+    :: Maze
+    -> Coords
+    -> (Maybe Tile -> Bool)
+    -> Coords
+    -> Bool
+  findPath maze (x,y) isEnd (x_next,y_next)
+   | isWall (whatTile maze (x,y)) = False
+   | isWay (whatTile maze (x,y + (x_next - x))) && (x_next /= x) = True
+   | isWay (whatTile maze (x,y - (x_next - x))) && (x_next /= x) = True
+   | isWay (whatTile maze (x + (y_next - y),y)) && (y_next /= y) = True
+   | isWay (whatTile maze (x - (y_next - y),y)) && (y_next /= y) = True
+   | isEnd (whatTile maze (x,y)) = True
+   | isExit (whatTile maze (x,y)) = True
+   | otherwise = findPath maze (x_next,y_next) isEnd (x_next + x_next - x ,y_next + y_next - y)
+   where
+    isWall Nothing = True
+    isWall (Just Wall) = True
+    isWall (Just _) = False
+    isWay Nothing = False
+    isWay (Just Floor) = True
+    isWay (Just FakeExit) = True
+    isWay (Just _) = False
+    isExit Nothing = False
+    isExit (Just Exit) = True
+    isExit (Just _) = False
+
 
 -- | Get index of element, 0 if it is not present
 indexOf
