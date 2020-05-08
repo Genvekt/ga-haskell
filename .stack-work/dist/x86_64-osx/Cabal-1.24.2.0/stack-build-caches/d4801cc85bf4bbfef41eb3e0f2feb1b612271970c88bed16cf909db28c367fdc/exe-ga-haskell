@@ -1,0 +1,68 @@
+/Users/egorpolivcev/Desktop/haskellprj/src/MazeHandler/Transformer.hs:
+  hash: 588058c46df4ce77e5477308c7fe8b2496b511ece431bbb0ed29434547899224
+  size: 2456
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/README.md:
+  hash: 2d3fa76302bec0b4a634b93fd33ad1f5553711b572a0eab0b2ebe3c8a30389e7
+  size: 12
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/Visualiser/Maze.hs:
+  hash: 63b0f1ab8c9f7d17a562167d8ce3b413b4f4334be46d9ac76c87a0e1992dcfd1
+  size: 861
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/Apps/GAMazeSolver/GA.hs:
+  hash: 310a7fb358193135d3eb7fd8b92d32a3728672af5c0950a8f981da169d6bd1e7
+  size: 3151
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/Visualiser/System.hs:
+  hash: 7e58f85fc616308ee99aa0aa0e8d4fa9d425da700e29f73d359da72b42dbfbe2
+  size: 604
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/Apps/GAMazeSolver/Settings.hs:
+  hash: 310ee0cf49f4fda48dcc16872794de626265f75dd1ea428bb5d74ca58e512bda
+  size: 1992
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/Main.hs:
+  hash: 8831d003ed4acd377c386db42b7db6501ca897328fe8d01ad8724866ae901f45
+  size: 79
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/Apps/GAMazeSolver/Interaction.hs:
+  hash: 8c0e0c4c5742a7f05a82f9e459821406e1ba974ac160fdea10fdf01777dc8102
+  size: 1525
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/ga-haskell.cabal:
+  hash: 2cf8d45e15a6b33200ea68317a6517163e7f675757320c83e297a862708a31bf
+  size: 667
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/Agent/MazeSolver.hs:
+  hash: 6e5b0c36aa26c4b439d47243835119b8d3383d3ea11c4e3576a204f38841a5cd
+  size: 4006
+  modtime: 1588942606
+/Users/egorpolivcev/Desktop/haskellprj/src/Visualiser/Agent.hs:
+  hash: 45a1ef909350e6f22c89cb1caafbe59395f288a99512027ee28ae0502b8226d8
+  size: 877
+  modtime: 1588940102
+/Users/egorpolivcev/Desktop/haskellprj/src/Apps/GAMazeSolver/Run.hs:
+  hash: cd2bd95f0a04ea3391dcfdbd9d08f15b708bc8d43718184fa740b5668ff6fe7e
+  size: 747
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/DataStructures/Maze.hs:
+  hash: e689df254d3e3449ab6e9d919bcad0396534af400981acb09e6c47fbb726f4cd
+  size: 252
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/MazeHandler/DFS.hs:
+  hash: f31a56c6d1281f60c7c93cc688051619f7aac7d88f6684593088de262b95cab6
+  size: 2051
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/MazeHandler/Searcher.hs:
+  hash: 8241253462893d46e5e479e77d688e55af8bc6cadb09d1d9e0e23abb8d9f65f9
+  size: 1360
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/DataStructures/Agent.hs:
+  hash: d5ac549c121295dbeeaa01dc0bec721db5e30724578795c6c588f3bdfe756d4f
+  size: 427
+  modtime: 1588937682
+/Users/egorpolivcev/Desktop/haskellprj/src/GA.hs:
+  hash: c7c10e196231a861dc5de30672392182fa52f13114e3c9bc83df94ae0bd48fa4
+  size: 2674
+  modtime: 1588937682
