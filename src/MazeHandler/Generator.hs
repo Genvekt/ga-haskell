@@ -33,11 +33,11 @@ gridRow (height, width)
       | width `mod` 2 == 0 = [Floor] <> gridRow (height, width-1)
       | otherwise = [Wall] <> gridRow (height, width-1)
 
-generateMaze :: (Int,Int) -> Maze
-generateMaze size = unmarkedMaze
+generateMaze :: (Int,Int)-> StdGen -> (Maze, StdGen)
+generateMaze size generator = (unmarkedMaze, updGen)
   where
     initialGrid = createGrid size
-    (maze, _) = dfsStep (2,2) markedGrid (mkStdGen 42)
+    (maze, updGen) = dfsStep (2,2) markedGrid generator
     markedGrid = map (map (\x -> (x, False))) initialGrid
     unmarkedMaze = map (map (\(x,_) ->  x)) maze
 
