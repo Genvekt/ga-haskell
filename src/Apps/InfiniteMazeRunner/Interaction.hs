@@ -35,29 +35,33 @@ drawState (State m1 m2 hero shift _ _) = drawSystem maze [hero]
    maze = makeMaze m1 m2 shift
 
 handleAction :: Event -> State -> State
-handleAction (EventKey (Char 'a') _ _ _) (State m1 m2 hero shift gen timer) =
-   State maze1 maze2 nextHero nextShift nextGen nextTimer
-
+handleAction (EventKey (Char 'a') Down _ _) state =
+   State maze1 maze2 updHero shift gen timer
      where
-       (height, width) = mazeShape m1                                           -- Size of the maze
-       (maze1, maze2, nextGen, nextShift, nextTimer) =
-         updateMaze (m1, m2, gen, shift, timer)
-       maze = makeMaze maze1 maze2 nextShift
-       (Hero gene path (x,y) lives) = updateHero hero maze
-       shiftedPath = map (\(x,y) -> (x,y-1)) path
-       nextHero
-        | timer < 20 = Hero gene path (x,y) lives
-        | otherwise = Hero gene shiftedPath (x,y-1) lives
+       (State maze1 maze2 hero shift gen timer) = shiftSystem state
+       maze = makeMaze maze1 maze2 shift
+       updHero = updateHero hero maze
 handleAction _ state = state
 
-updateMaze :: (Maze, Maze, StdGen, Int, Int) -> (Maze, Maze, StdGen, Int, Int)
-updateMaze (m1, m2, gen, shift, 20)
- | shift < width-2 = (m1, m2, gen, (shift+1), 0)
- | otherwise = (m2, newMaze, updGen, 1, 0)
+shiftSystem:: State -> State
+shiftSystem (State m1 m2 hero shift gen 15) = State maze1 maze2 shiftedHero newshift newGen 0
+  where
+    (maze1, maze2, newGen, newshift) = updateMaze (m1, m2, gen, shift)
+    shiftedHero = shiftHero hero
+shiftSystem (State m1 m2 hero shift gen timer) = State m1 m2 hero shift gen (timer+1)
+
+updateMaze :: (Maze, Maze, StdGen, Int) -> (Maze, Maze, StdGen, Int)
+updateMaze (m1, m2, gen, shift)
+ | shift < width-2 = (m1, m2, gen, (shift+1))
+ | otherwise = (m2, newMaze, updGen, 1)
   where
     (height, width) = mazeShape m1
     (newMaze, updGen) = generateMaze (height, width) gen
-updateMaze (m1, m2, gen, shift, timer) = (m1, m2, gen, shift, timer+1)
+
+shiftHero:: Hero -> Hero
+shiftHero (Hero gene path (x,y) lives) = (Hero gene shiftedPath (x,y-1) lives)
+  where
+    shiftedPath = map (\(x,y) -> (x,y-1)) path
 
 updateHero::Hero->Maze->Hero
 updateHero (Hero gene path (x,y) lives) maze

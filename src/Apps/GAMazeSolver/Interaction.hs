@@ -31,7 +31,7 @@ updateHeros :: Float -> [Hero] -> [Hero]
 updateHeros _ heros = heros
 
 handleAction :: Maze -> (Event -> [Hero] -> [Hero])
-handleAction maze (EventKey (Char 'q') _ _ _) = map (makeMove maze)
+handleAction maze (EventKey (Char 'q') Down _ _) = map (makeMove maze)
 handleAction maze _ = id
 
                               -- ^ The maze where all out of hero's vision is wall
