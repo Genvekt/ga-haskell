@@ -24,14 +24,23 @@ runSimulation (Hero (vision, memory) history position health) maze =
     new_history = reverse( take memory ( position : reverse history))             -- ^ The updated hero's memory about his moves
     visible_maze = cutMaze maze position vision                                  -- ^ The maze where all out of hero's vision is wall
 
-
+makeMove ::Maze-> Hero -> Hero
+makeMove maze (Hero (vision, memory) history position health) = (Hero (vision, memory) new_history next_position health)
+ where
+  next_position =
+      nextMove (Hero (vision, memory) history position health) visible_maze      -- ^ The position hero chooses to go to now
+  new_history = reverse( take memory ( position : reverse history))             -- ^ The updated hero's memory about his moves
+  visible_maze = cutMaze maze position vision
+  
 -- | Determine where hero will go next at this particular moment of time
 nextMove
  :: Hero   -- ^ State of the gene
  -> Maze   -- ^ Maze to solve
  -> Coords -- ^ The next position that hero choose
 nextMove (Hero (vision, memory) history (x,y) health) maze
- | stopOn Exit (whatTile maze (x,y)) = (x,y)                                    -- ^ If current position is exit, stay on this position                      -- ^ If exit is in vision area, try go first leading to it direction
+
+ | stopOn Exit (whatTile maze (x,y)) = (x,y)                                    -- ^ If current position is exit, stay on this position                  
+ -- | contains maze Exit = go_to (listToMaybe coords_to_exit)                        -- ^ If exit is in vision area, try go first leading to it direction
  | otherwise =
      decideMove (Hero (vision, memory) history (x,y) health) modified_maze       -- ^ Choose good enough move
   where

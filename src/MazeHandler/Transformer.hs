@@ -46,16 +46,29 @@ mapEmptyRow (x, y) r (index, row)
     | (index < (y-r)) || (index>(y+r)) = Wall
     | otherwise = cell
 
-
-
-
-
 -- | Add coordinated to all cells of the board
 addCoords :: Maze -> [[(Tile, (Int,Int))]]
 addCoords board = map addCoordsRow (zip board [1..])
+
 
 -- | Add coordinated to all cells in the row
 addCoordsRow :: ([Tile], Int) -> [(Tile, (Int,Int))]
 addCoordsRow (row, index) = zip row (zip [1..] (to_list index))
  where
   to_list a = a:to_list a
+
+changeCellAt
+ :: [[a]]
+ -> Coords
+ -> a
+ -> [[a]]
+
+-- Change cell in matrix to some value
+changeCellAt matrix (i,j) value = map changeRow(zip [1..] matrix)
+ where
+   changeRow (rowID, row)
+    | rowID == i = map changeCell (zip [1..] row)
+    | otherwise = row
+   changeCell (cellID, cell)
+    | cellID == j = value
+    | otherwise = cell

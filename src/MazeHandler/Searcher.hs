@@ -19,13 +19,12 @@ contains maze tile
      isExit _ = False
 
 
-
 -- | Get tile by coordinates
-whatTile
- :: Maze       -- ^ Matrix of cells
+whatCell
+ :: [[a]]       -- ^ Matrix of cells
  -> Coords     -- ^ Where to look
- -> Maybe Tile
-whatTile maze (x,y) = getColumn row
+ -> Maybe a
+whatCell maze (x,y) = getColumn row
   where
    row = lookup x (zip [1..] maze)
    getColumn Nothing = Nothing
