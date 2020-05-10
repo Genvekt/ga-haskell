@@ -31,7 +31,7 @@ makeMove maze (Hero (vision, memory) history position health) = (Hero (vision, m
       nextMove (Hero (vision, memory) history position health) visible_maze      -- ^ The position hero chooses to go to now
   new_history = reverse( take memory ( position : reverse history))             -- ^ The updated hero's memory about his moves
   visible_maze = cutMaze maze position vision
-  
+
 -- | Determine where hero will go next at this particular moment of time
 nextMove
  :: Hero   -- ^ State of the gene
@@ -39,7 +39,7 @@ nextMove
  -> Coords -- ^ The next position that hero choose
 nextMove (Hero (vision, memory) history (x,y) health) maze
 
- | stopOn Exit (whatTile maze (x,y)) = (x,y)                                    -- ^ If current position is exit, stay on this position                  
+ | stopOn Exit (whatCell maze (x,y)) = (x,y)                                    -- ^ If current position is exit, stay on this position
  -- | contains maze Exit = go_to (listToMaybe coords_to_exit)                        -- ^ If exit is in vision area, try go first leading to it direction
  | otherwise =
      decideMove (Hero (vision, memory) history (x,y) health) modified_maze       -- ^ Choose good enough move
@@ -89,13 +89,13 @@ decideMove (Hero _ history (x,y) _) maze =
     -> Coords
     -> Bool
   findPath maze (x,y) isEnd (x_next,y_next)
-   | isWall (whatTile maze (x,y)) = False
-   | isWay (whatTile maze (x,y + (x_next - x))) && (x_next /= x) = True
-   | isWay (whatTile maze (x,y - (x_next - x))) && (x_next /= x) = True
-   | isWay (whatTile maze (x + (y_next - y),y)) && (y_next /= y) = True
-   | isWay (whatTile maze (x - (y_next - y),y)) && (y_next /= y) = True
-   | isEnd (whatTile maze (x,y)) = True
-   | isExit (whatTile maze (x,y)) = True
+   | isWall (whatCell maze (x,y)) = False
+   | isWay (whatCell maze (x,y + (x_next - x))) && (x_next /= x) = True
+   | isWay (whatCell maze (x,y - (x_next - x))) && (x_next /= x) = True
+   | isWay (whatCell maze (x + (y_next - y),y)) && (y_next /= y) = True
+   | isWay (whatCell maze (x - (y_next - y),y)) && (y_next /= y) = True
+   | isEnd (whatCell maze (x,y)) = True
+   | isExit (whatCell maze (x,y)) = True
    | otherwise = findPath maze (x_next,y_next) isEnd (x_next + x_next - x ,y_next + y_next - y)
    where
     isWall Nothing = True
