@@ -34,10 +34,4 @@ handleAction :: Maze -> (Event -> [Hero] -> [Hero])
 handleAction maze (EventKey (Char 'q') _ _ _) = map (makeMove maze)
 handleAction maze _ = id
 
-makeMove ::Maze-> Hero -> Hero
-makeMove maze (Hero (vision, memory) history position health) = (Hero (vision, memory) new_history next_position health)
- where
-  next_position =
-      nextMove (Hero (vision, memory) history position health) visible_maze      -- ^ The position hero chooses to go to now
-  new_history = reverse( take memory ( position : reverse history))             -- ^ The updated hero's memory about his moves
-  visible_maze = cutMaze maze position vision                                  -- ^ The maze where all out of hero's vision is wall
+                              -- ^ The maze where all out of hero's vision is wall
