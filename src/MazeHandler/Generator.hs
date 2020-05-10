@@ -10,13 +10,6 @@ import MazeHandler.Searcher
 import MazeHandler.Transformer
 
 
-randomList :: Int -> IO([Double])
-randomList 0 = return []
-randomList n = do
-  r  <- randomIO
-  rs <- randomList (n-1)
-  return (r:rs)
-
 -- Grid of floors surrounded by walls
 createGrid ::(Int, Int) -> Maze
 createGrid (height, width)

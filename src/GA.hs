@@ -2,6 +2,7 @@ module GA where
 import System.Random
 import Data.List
 import Data.Maybe
+import Data.Monoid ((<>))
 -------------------- General Genetic Algorithm ---------------------------------
 
 -- | General Genetic Algorithm
@@ -15,38 +16,24 @@ geneticAlgorithm
   -> (a -> Double) -- ^ Fitness function
   -> ([a] -> [a])  -- ^ Crossover function
   -> (Double->(Double,a) -> a)      -- ^ Mutation function
-  -> ([a] -> IO())  -- ^ Visualization function
-  -> IO()           -- ^ Generation with best genes
+  -> StdGen
+  -> ([a], StdGen) -- ^ Generation with best genes
 
 
 -- | Base case only selected
-geneticAlgorithm population _ percent _ 0 fit _ _ simulate= do
-    let scored_parents = map (\x -> (fit x,x)) population
-    let best_parents = takeBest scored_parents percent
-    putStr("Best generation: ")
-    putStr(show(best_parents))
-    simulate (take 3(best_parents))
+geneticAlgorithm population _ percent _ 0 fit _ _ gen = (best_parents, gen)
+    where
+      scored_parents = map (\x -> (fit x,x)) population
+      best_parents = takeBest scored_parents percent
 
 
 -- | General case, run more generations
-geneticAlgorithm population prob_chrom percent_to_take pop_size generations fit cross mutate simulate= do
- probs <- randomList (length(population)) :: IO([Double])
- let scored_parents = map (\x -> (fit x,x)) population
- let new_population = map (mutate prob_chrom) (zip probs children)
- putStr("Generation: ")
- putStrLn(show(generations))
- putStr("Population score: ")
- putStrLn(show(scored_parents))
- putStr("Best ones: ")
- putStrLn(show(selected_parents))
- putStr("Children: ")
- putStrLn(show(children))
- putStr("To next generation: ")
- putStrLn(show(new_population))
- putStrLn("")
- geneticAlgorithm new_population prob_chrom percent_to_take pop_size (generations-1) fit cross mutate simulate
+geneticAlgorithm population prob_chrom percent_to_take pop_size generations fit cross mutate generator=
+ geneticAlgorithm new_population prob_chrom percent_to_take pop_size (generations-1) fit cross mutate newGen
   where
+   (probs, newGen) = randomList (length(population)) generator
    scored_parents = map (\x -> (fit x,x)) population
+   new_population = map (mutate prob_chrom) (zip probs children)
    children = take pop_size (cross selected_parents)
    selected_parents = takeBest scored_parents percent_to_take
 
@@ -65,9 +52,9 @@ takeBest population percent_to_take = selected_parents
    current_size = length(population)
 
 
-randomList :: Int -> IO([Double])
-randomList 0 = return []
-randomList n = do
- r  <- randomIO
- rs <- randomList (n-1)
- return (r:rs)
+randomList :: Int -> StdGen -> ([Double], StdGen)
+randomList 0 gen = ([], gen)
+randomList n gen = ([random_num]<>random_list, newGen)
+  where
+   (random_num, nextGen) = randomR (0.0, 1.0) gen
+   (random_list, newGen) = randomList (n-1) nextGen
