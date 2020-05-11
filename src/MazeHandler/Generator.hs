@@ -62,6 +62,24 @@ dfsStep (i,j) board generator = runDFS
         boarWithoutWall = changeCellAt updatedBoard wallToRemove (Floor, True)
         (boardAfterDFS, newGen) = dfsStep neighbour boarWithoutWall updGen
 
-length' :: [a] -> Int
-length' [] = 0
-length' xs = sum [1 | _ <- xs]
+-- | Generate InfMaze
+generateInfMaze :: (Int,Int) -> InfMaze
+generateInfMaze size = InfMaze maze1 maze2 0 generator2 0
+  where
+    (maze1, generator1) = generateMaze size (mkStdGen 42)
+    (maze2, generator2) = generateMaze size generator1
+
+
+-- | Merge two mazes to one with shift
+makeMaze :: Maze -> Maze -> Shift -> Maze
+makeMaze maze1 maze2 shift= union
+ where
+   (_, width) = mazeShape maze1
+   croppedPart1 = map (take (width-1)) maze1
+   uppendedPart1 = map uppend (zip [1..] croppedPart1)
+   part1 = map (drop shift) uppendedPart1
+   part2 = map ((take shift).(drop 1))  maze2
+   uppend (index, row)
+    | index `mod` 2 == 0 = row <> [Floor]
+    | otherwise = row <> [Wall]
+   union = map (\(row1, row2) -> [Wall] <> row1 <> row2 <> [Wall]) (zip part1 part2)

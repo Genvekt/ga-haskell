@@ -13,10 +13,10 @@ solution2 :: IO()
 solution2 = visualization (initPopulation genePoints populationSize)
 
 solution3 :: IO()
-solution3 = ruAlgorithm
+solution3 = runAlgorithm
 
-ruAlgorithm :: IO()
-ruAlgorithm = visualization agents
+runAlgorithm :: IO()
+runAlgorithm = visualization agents
   where
     (agents, _) = geneticAlgorithm
                 (initPopulation genePoints populationSize)

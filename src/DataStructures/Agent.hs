@@ -9,3 +9,5 @@ data Hero = Hero
                  Path    -- | The memorized past path
                  Coords  -- | The position in maze
                  Int     -- | Moves left (Health)
+  deriving Show               
+data State = State InfMaze Hero
