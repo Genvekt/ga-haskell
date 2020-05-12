@@ -3,6 +3,9 @@ module Apps.GAMazeSolver.Interaction where
 import Graphics.Gloss.Interface.Pure.Game
 import Graphics.Gloss
 
+import MazeHandler.Generator
+import System.Random
+
 import DataStructures.Maze
 import DataStructures.Agent
 import Visualiser.System
@@ -14,8 +17,10 @@ import Apps.GAMazeSolver.Settings
 import Agent.MazeSolver
 
 
-visualization ::[Gene] ->  IO()
-visualization genes = play window white 10 (initHeros genes) (drawSystem currentMaze) (handleAction currentMaze) updateHeros
+visualization ::(Int,Int) -> Int -> [Gene] ->  IO()
+visualization size seed genes = play window white 10 (initHeros genes) (drawSystem currentMaze) (handleAction currentMaze) updateHeros
+ where
+   (currentMaze,_) = generateMaze size (mkStdGen seed)
 
 window :: Display
 window = InWindow "Nice Window" (200, 200) (10, 10)

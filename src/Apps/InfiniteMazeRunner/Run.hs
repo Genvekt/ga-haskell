@@ -7,8 +7,8 @@ import GA
 import System.Random
 
 
-runAlgorithm :: (Int,Int) -> IO()
-runAlgorithm size=  agentsInMaze size agents
+runAlgorithm :: (Int,Int) -> Int -> IO()
+runAlgorithm size seed=  agentsInMaze size seed agents
   where
     (agents, _) = geneticAlgorithm
                 (initPopulation genePoints populationSize)
@@ -16,7 +16,7 @@ runAlgorithm size=  agentsInMaze size agents
                 70.0
                 populationSize
                 generations
-                (evaluateHero (generateInfMaze size))
+                (evaluateHero (generateInfMaze size seed))
                 crossGenes
                 mutateGene
                 (mkStdGen 33)

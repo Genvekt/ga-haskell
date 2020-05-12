@@ -3,20 +3,14 @@ module Apps.GAMazeSolver.Run where
 import Apps.GAMazeSolver.Interaction
 import Apps.GAMazeSolver.Settings
 import Apps.GAMazeSolver.GA
+import MazeHandler.Generator
 import GA
 import System.Random
+import MazeHandler.Generator
 --------------------------------- The Entry Points -----------------------------
-solution1:: IO()
-solution1 = visualization [(20,2)]
 
-solution2 :: IO()
-solution2 = visualization (initPopulation genePoints populationSize)
-
-solution3 :: IO()
-solution3 = runAlgorithm
-
-runAlgorithm :: IO()
-runAlgorithm = visualization agents
+runAlgorithm :: (Int, Int) -> Int -> IO()
+runAlgorithm size seed= visualization size seed agents
   where
     (agents, _) = geneticAlgorithm
                 (initPopulation genePoints populationSize)
@@ -27,4 +21,5 @@ runAlgorithm = visualization agents
                 (evaluateHero currentMaze)
                 crossGenes
                 mutateGene
-                (mkStdGen 42)
+                (mkStdGen seed)
+    (currentMaze,_) = generateMaze size (mkStdGen seed)
