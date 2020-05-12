@@ -40,10 +40,10 @@ generateMaze size generator = (unmarkedMaze, updGen)
 
 -- | One single step of DFT algorithm for maze generation
 dfsStep
-:: Coords                    -- ^ Current position
--> [[(Tile,Bool)]]           -- ^ Maze where each tile is market as visited or not
--> StdGen                    -- ^ Random Generator
--> ([[(Tile,Bool)]], StdGen) -- ^ Resulted maze after one step and updated Generator
+ :: Coords                    -- ^ Current position
+ -> [[(Tile,Bool)]]           -- ^ Maze where each tile is market as visited or not
+ -> StdGen                    -- ^ Random Generator
+ -> ([[(Tile,Bool)]], StdGen) -- ^ Resulted maze after one step and updated Generator
 dfsStep (i,j) board generator = runDFS
   where
     neighbours = getUnvisited (i-2,j) board <> getUnvisited (i+2,j) board<>      -- ^ Get all unvisited neighbours

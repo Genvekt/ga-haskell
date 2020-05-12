@@ -13,7 +13,7 @@ import Visualiser.Agent
 
 drawSystem:: Maze -> [Hero] -> Picture
 drawSystem maze heros =
- scale size size (translate (0) (0) ( drawBoard maze  <> mconcat (map drawHero heros) ))
+ scale size size (translate (-j/2) (-i/2) ( drawBoard maze  <> mconcat (map drawHero heros) ))
   where
    (height,width) = mazeShape maze
    i = fromIntegral height

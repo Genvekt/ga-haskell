@@ -62,3 +62,7 @@ dispatch ["ord", "no-ga", seed, h, w] =   do
   let gene = [(v,m)]
   Apps.GAMazeSolver.Interaction.visualization (hNum, wNum) seedNum gene
 
+dispatch _ = do
+  putStrLn "Not enough parameters! Running default case"
+  putStrLn "Refer to README.md in the project root for more information about parameters."
+  Apps.InfiniteMazeRunner.Interaction.agentsInMaze (10, 10) 42 [(5,5)]
