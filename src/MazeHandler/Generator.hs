@@ -26,7 +26,11 @@ gridRow (height, width)
       | width `mod` 2 == 0 = [Floor] <> gridRow (height, width-1)
       | otherwise = [Wall] <> gridRow (height, width-1)
 
-generateMaze :: (Int,Int)-> StdGen -> (Maze, StdGen)
+-- | Generate one maze
+generateMaze
+ ::(Int,Int)       -- ^ Height and Width of the maze
+ -> StdGen         -- ^ Random generator
+ -> (Maze, StdGen) -- ^ Resulted maze and updated Generator
 generateMaze size generator = (unmarkedMaze, updGen)
   where
     initialGrid = createGrid size
@@ -34,13 +38,17 @@ generateMaze size generator = (unmarkedMaze, updGen)
     markedGrid = map (map (\x -> (x, False))) initialGrid
     unmarkedMaze = map (map (\(x,_) ->  x)) maze
 
-dfsStep :: Coords -> [[(Tile,Bool)]] -> StdGen -> ([[(Tile,Bool)]], StdGen)
+-- | One single step of DFT algorithm for maze generation
+dfsStep
+:: Coords                    -- ^ Current position
+-> [[(Tile,Bool)]]           -- ^ Maze where each tile is market as visited or not
+-> StdGen                    -- ^ Random Generator
+-> ([[(Tile,Bool)]], StdGen) -- ^ Resulted maze after one step and updated Generator
 dfsStep (i,j) board generator = runDFS
-  -- get all unvisited neighbours
   where
-    neighbours = getUnvisited (i-2,j) board <> getUnvisited (i+2,j) board<>
+    neighbours = getUnvisited (i-2,j) board <> getUnvisited (i+2,j) board<>      -- ^ Get all unvisited neighbours
                  getUnvisited (i,j+2) board <> getUnvisited (i,j-2) board
-    (nextRandomCell, updGen) = randomR (1, length neighbours) generator
+    (nextRandomCell, updGen) = randomR (1, length neighbours) generator          -- ^ Choose random unvisited neighbour
     getUnvisited coords grid
      | isUnvisited (whatCell grid coords) = [coords]
      | otherwise = []
@@ -49,18 +57,18 @@ dfsStep (i,j) board generator = runDFS
     isUnvisited (Just (_,True)) = False
     isUnvisited (Just (_,False)) = True
 
-    updatedBoard = changeCellAt board (i,j) (Floor, True)
+    updatedBoard = changeCellAt board (i,j) (Floor, True)                        -- ^ Mark current position as visited
     nextCell (Just cellCoords) =  cellCoords
     nextCell Nothing = (i,j)
-    runDFS
-     | length neighbours > 0 = dfsStep (i,j) boardAfterDFS newGen
-     | otherwise = (updatedBoard, generator)
+    runDFS                                                                       -- ^ Result of next DFS step
+     | length neighbours > 0 = dfsStep (i,j) boardAfterDFS newGen                -- ^ Case when there are unvisited neighbours
+     | otherwise = (updatedBoard, generator)                                     -- ^ Case when there is no unvisited neighbours
       where
         mean (x1,y1) (x2,y2) = ((x1+x2)`div` 2,(y1+y2)`div` 2)
         neighbour = nextCell (lookup nextRandomCell (zip [1..] neighbours))
         wallToRemove = mean neighbour (i,j)
-        boarWithoutWall = changeCellAt updatedBoard wallToRemove (Floor, True)
-        (boardAfterDFS, newGen) = dfsStep neighbour boarWithoutWall updGen
+        boarWithoutWall = changeCellAt updatedBoard wallToRemove (Floor, True)   -- ^ remove wall between selected neighbour and
+        (boardAfterDFS, newGen) = dfsStep neighbour boarWithoutWall updGen       -- ^ current cell
 
 -- | Generate InfMaze
 generateInfMaze :: (Int,Int)-> Int -> InfMaze

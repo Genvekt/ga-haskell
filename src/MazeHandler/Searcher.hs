@@ -45,6 +45,7 @@ coordsOfTile maze tile = extract (find (equals Exit) numerated_cells)
    equals Floor (_,(_,Floor)) = True
    equals _ _ = False
 
+-- | Get height and width of maze
 mazeShape :: Maze -> (Int,Int)
 mazeShape maze = (height, width)
     where
