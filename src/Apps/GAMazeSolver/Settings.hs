@@ -3,7 +3,7 @@ import DataStructures.Maze
 --------------------------------- Settings -------------------------------------
 -- | The maze that hero solves now
 currentMaze :: Maze
-currentMaze = testMaze3
+currentMaze = testMaze2
 
 -- | Initial coordinations for each gene
 startCoords :: Coords

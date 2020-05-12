@@ -7,7 +7,7 @@ import GA
 import System.Random
 --------------------------------- The Entry Points -----------------------------
 solution1:: IO()
-solution1 = visualization [(20,2)]
+solution1 = visualization [(1,10), (1,11)]
 
 solution2 :: IO()
 solution2 = visualization (initPopulation genePoints populationSize)
