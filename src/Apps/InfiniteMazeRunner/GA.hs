@@ -1,22 +1,16 @@
-module Apps.GAMazeSolver.GA where
+module Apps.InfiniteMazeRunner.GA where
 
-import Apps.GAMazeSolver.Settings
+import Apps.InfiniteMazeRunner.Settings
+
 import Data.List
 import Data.Maybe
-import System.Random
-
 
 import DataStructures.Maze
 import DataStructures.Agent
 
-import MazeHandler.Searcher
-import MazeHandler.Transformer
-
-import Agent.MazeSolver
-
+import Agent.InfMazeSolver
 
 ------------------- Initial Population Builder ---------------------------------
-
 -- | The starting population
 initPopulation
  :: Int         -- ^ The number of genetical points
@@ -29,31 +23,17 @@ initPopulation amount size = take size (map makeGene [0,1..])
 ------------------------ Fit Function ------------------------------------------
 -- | The criteria when hero stops
 stopCriteria :: Hero -> Bool
-stopCriteria (Hero _ _ _ lives )
- | lives > 0 = False
+stopCriteria (Hero _ _ (_, y) lives )
+ | lives > 1000 = True
+ | y > 0 && lives <=100 = False
  | otherwise = True
 
--- | Write hero walk through maze and return how far from finish he dies
-evaluateHero :: Maze ->(Gene -> Double)
-evaluateHero maze gene = distance maze endCoords
- where
-   (Hero _ _ endCoords _) =
-     runSimulation (Hero gene [] startCoords heroHealth) maze stopCriteria
-
-
--- | Distance from given position to the exit of maze
-distance
- :: Maze
- -> Coords  -- ^ Position from which the distance is meatured
- -> Double  -- ^ Distance
-distance maze (x, y) = sqrt (fromIntegral ((x0 - x)^2 + (y0 - y)^2))
- where
-  stop (Just coords) = coords
-  stop Nothing = (10000,10000)
-  exit = coordsOfTile maze Exit
-  (x0, y0) = stop exit
-
-
+-- | Write hero walk through maze and return how many steps it makes before death
+evaluateHero :: InfMaze ->(Gene -> Double)
+evaluateHero maze gene = -1 * (fromIntegral heroHealth)
+  where
+    (Hero _ _ _ heroHealth) =
+       runInInfMaze (Hero gene [] (2,2) 0) maze stopCriteria
 
 ------------------------ Cross Over Function -----------------------------------
 
@@ -81,7 +61,7 @@ mean x y = round( fromIntegral(x+y) / 2)
 
 ------------------------- Mutation Function ------------------------------------
 
--- | Mutate each element of gene with given probability                           -- ^
+-- | Mutate each element of gene with given probability
 mutateGene
  :: Double         -- ^ The treshold for mutation to happen
  -> (Double,Gene)  -- ^ Gene to mutate with its probability to mutate

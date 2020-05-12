@@ -14,15 +14,18 @@ import MazeHandler.DFS
 runSimulation
  :: Hero    -- ^ State of the gene
  -> Maze    -- ^ Maze to solve
- -> Coords  -- ^ The end point where hero dies
-runSimulation (Hero _ _ position 0) _ = position                                 -- ^ End simulation then hero is dead
-runSimulation (Hero (vision, memory) history position health) maze =
- runSimulation (Hero (vision, memory) new_history next_position (health-1)) maze -- ^ Continue simulation from next position
-   where
-    next_position =
-      nextMove (Hero (vision, memory) history position health) visible_maze      -- ^ The position hero chooses to go to now
-    new_history = reverse( take memory ( position : reverse history))             -- ^ The updated hero's memory about his moves
-    visible_maze = cutMaze maze position vision                                  -- ^ The maze where all out of hero's vision is wall
+ -> (Hero -> Bool) -- ^ Stop criteria
+ -> Hero  -- ^ The end point where hero dies
+runSimulation (Hero (vis, mem) hist pos health) maze isStop
+ | isStop (Hero (vis, mem) hist pos health) =                                   -- ^ End simulation on stopp criteria
+   (Hero (vis, mem) hist pos health)
+ | otherwise =
+    runSimulation (Hero (vis, mem) new_hist next_pos (health-1)) maze  isStop   -- ^ Continue simulation from next position
+     where
+      next_pos =
+        nextMove (Hero (vis, mem) hist pos health) visible_maze      -- ^ The position hero chooses to go to now
+      new_hist = reverse( take mem ( pos : reverse hist))             -- ^ The updated hero's memory about his moves
+      visible_maze = cutMaze maze pos vis                                  -- ^ The maze where all out of hero's vision is wall
 
 makeMove ::Maze-> Hero -> Hero
 makeMove maze (Hero (vision, memory) history position health) = (Hero (vision, memory) new_history next_position health)
