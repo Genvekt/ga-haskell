@@ -12,27 +12,27 @@ import Visualiser.System
 import DataStructures.Maze
 import DataStructures.Agent
 
-agentsInMaze :: (Int, Int) -> [Gene] -> IO()
-agentsInMaze size agents = play window white 10 (initStates size agents) drawState handleAction updateState
+agentsInMaze :: (Int, Int) -> Int -> [Gene] -> IO()
+agentsInMaze size seed agents = play window white 10 (initStates size seed agents) drawState handleAction updateState
 
 
-infiniteMaze :: (Int, Int)-> IO()
-infiniteMaze size = play window white 10 (initialState size) drawState handleAction updateState
+infiniteMaze :: (Int, Int) -> Int -> IO()
+infiniteMaze size seed = play window white 10 (initialState size seed) drawState handleAction updateState
 
 window :: Display
 window = InWindow "Nice Window" (600, 600) (10, 10)
 
-initialState :: (Int, Int)-> [State]
-initialState size = [State infMaze hero1,State infMaze hero2]
+initialState :: (Int, Int)-> Int-> [State]
+initialState size seed= [State infMaze hero1,State infMaze hero2]
   where
-    infMaze = generateInfMaze size
+    infMaze = generateInfMaze size seed
     hero1 = Hero (5,10) [] (2,2) 0
     hero2 = Hero (10,5) [] (2,2) 0
 
-initStates :: (Int, Int) -> [Gene] -> [State]
-initStates size genes = map (\gene -> (State maze (Hero gene [] (2,2) 0))) genes
+initStates :: (Int, Int) -> Int-> [Gene] -> [State]
+initStates size seed genes = map (\gene -> (State maze (Hero gene [] (2,2) 0))) genes
  where
-   maze = generateInfMaze size
+   maze = generateInfMaze size seed
 
 updateState :: Float -> [State] -> [State]
 updateState _ state = state

@@ -63,10 +63,10 @@ dfsStep (i,j) board generator = runDFS
         (boardAfterDFS, newGen) = dfsStep neighbour boarWithoutWall updGen
 
 -- | Generate InfMaze
-generateInfMaze :: (Int,Int) -> InfMaze
-generateInfMaze size = InfMaze maze1 maze2 0 generator2 0
+generateInfMaze :: (Int,Int)-> Int -> InfMaze
+generateInfMaze size seed = InfMaze maze1 maze2 0 generator2 0
   where
-    (maze1, generator1) = generateMaze size (mkStdGen 42)
+    (maze1, generator1) = generateMaze size (mkStdGen seed)
     (maze2, generator2) = generateMaze size generator1
 
 
