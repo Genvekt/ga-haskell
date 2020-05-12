@@ -12,16 +12,18 @@ import Visualiser.System
 import DataStructures.Maze
 import DataStructures.Agent
 
+-- | Run several agents in one maze
 agentsInMaze :: (Int, Int) -> Int -> [Gene] -> IO()
 agentsInMaze size seed agents = play window white 10 (initStates size seed agents) drawState handleAction updateState
 
-
+-- | Run determined agents in one maze
 infiniteMaze :: (Int, Int) -> Int -> IO()
 infiniteMaze size seed = play window white 10 (initialState size seed) drawState handleAction updateState
 
 window :: Display
-window = InWindow "Nice Window" (600, 600) (10, 10)
+window = InWindow "Nice Window" (1000, 1500) (10, 10)
 
+-- | The initial state of the system
 initialState :: (Int, Int)-> Int-> [State]
 initialState size seed= [State infMaze hero1,State infMaze hero2]
   where
@@ -29,6 +31,7 @@ initialState size seed= [State infMaze hero1,State infMaze hero2]
     hero1 = Hero (5,10) [] (2,2) 0
     hero2 = Hero (10,5) [] (2,2) 0
 
+-- | Initial state with given agents
 initStates :: (Int, Int) -> Int-> [Gene] -> [State]
 initStates size seed genes = map (\gene -> (State maze (Hero gene [] (2,2) 0))) genes
  where
