@@ -9,6 +9,7 @@ import System.Random
 import MazeHandler.Generator
 --------------------------------- The Entry Points -----------------------------
 
+
 runAlgorithm :: (Int, Int) -> Int -> IO()
 runAlgorithm size seed= visualization size seed agents
   where

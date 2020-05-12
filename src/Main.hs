@@ -18,7 +18,6 @@ import Apps.GAMazeSolver.Interaction
 
 
 main :: IO ()
---main = solution3
 main = do
   args <- getArgs
   dispatch args
@@ -62,3 +61,4 @@ dispatch ["ord", "no-ga", seed, h, w] =   do
   let seedNum = (read seed :: Int)
   let gene = [(v,m)]
   Apps.GAMazeSolver.Interaction.visualization (hNum, wNum) seedNum gene
+

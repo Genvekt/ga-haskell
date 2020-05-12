@@ -55,10 +55,10 @@ decideMove
  :: Hero     -- ^ State of the gene
  -> Maze     -- ^ Maze to solve
  -> Coords   -- ^ The good enough move
-decideMove (Hero _ history (x,y) _) maze =
+decideMove (Hero (vision, memory) history (x,y) _) maze =
  extractMove (listToMaybe sorted_coords)
  where
-  good_coords = runPathFinder maze (stopOn FakeExit) (x,y)                             -- ^ Coords that leads to any FakeExit
+  good_coords = runPathFinder maze vision memory (stopOn FakeExit) (x,y)                             -- ^ Coords that leads to any FakeExit
   ages = map (indexOf (zip [1..] history)) good_coords                           -- ^ Determine how old the coords are in terms of your memory
   sorted_coords = sortOn fst (zip ages good_coords)                               -- ^ Sort coords in unknow -> oldest -> newest visited order
   extractMove (Just (_,move)) = move                                                -- ^ Good move == move that is far away in memory
@@ -67,13 +67,20 @@ decideMove (Hero _ history (x,y) _) maze =
   -- | Get list of coordinates that leads to desired Tile
   runPathFinder
    :: Maze                 -- ^ Where to search
+   -> Int
+   -> Int
    -> (Maybe Tile -> Bool) -- ^ Stop condition
    -> Coords               -- ^ Start position
    -> [Coords]             -- ^ Coordinates that leads to desired Tile
-  runPathFinder maze stop_condition (x,y) =
+  runPathFinder maze vison memory stop_condition (x,y) =
      filter (hasPath maze stop_condition (x,y)) coords                            -- ^ Filter only coords that lead to desired Tile
    where
-    coords = [(x+1,y),(x-1,y),(x,y+1),(x,y-1)]                                     -- ^ Try all 4 directions from start position
+    coords
+      | (vison `mod` 2 == 0) && (memory `mod` 2 == 0) = [(x+1,y),(x-1,y),(x,y+1),(x,y-1)]                                     -- ^ Try all 4 directions from start position
+      | (vison `mod` 2 == 1) && (memory `mod` 2 == 0) = [(x-1,y),(x,y+1),(x,y-1),(x+1,y)]
+      | (vison `mod` 2 == 0) && (memory `mod` 2 == 1) = [(x,y+1),(x,y-1),(x+1,y),(x-1,y)]
+      | (vison `mod` 2 == 1) && (memory `mod` 2 == 1) = [(x,y-1),(x+1,y),(x-1,y),(x,y+1)]
+      | otherwise = [(x+1,y),(x-1,y),(x,y+1),(x,y-1)]
 
   -- | Check if move leads to desired Tile
   hasPath
