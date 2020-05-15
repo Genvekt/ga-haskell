@@ -1,4 +1,6 @@
 # haskell-ga
+![](maze1.gif)
+
 This project is based on Genetic Algorithm for agents walking in mazes. It consists of 2 parts - Ordinary maze and Infinite maze as environment.
 
 # Run project
@@ -45,6 +47,8 @@ The movement of agent id determined by his vision and memory.
 
 It firstly determines the Floor tiles that lies on the edge of his vision, as they are possible ways out of the maze. Secondly, agent choose one of 4 directions leading to at least 1 cell specified in first step using its memory, based on idea of moving to sell that it remembers worse of all. Also at the bottom of the agent gene, a choice is made which way he will go first in order, in the case when he has several paths.
 # How does the agent see the maze?
+
+![](maze2.gif)
 
 His vision spreads in 4 directions: up, down, left, right. Also added was the vision of “doors”, cells that are not walls on the sides of the corridor in the center. This was added so that the agent could see the passages on the sides of the walls, otherwise the maximum size of the agent would be 1. 
 
